@@ -32,30 +32,64 @@ A principal motivação deste experimento foi explorar a arquitetura **Dual-Core
 | **MPU6050 SDA** | GPIO 21 | Dados I2C |
 
 
+![Foto da montagem em protoboard.](https://github.com/user-attachments/assets/26a0a4d3-c94f-4304-818b-be072336e372)
 
-
-
----
-
-##  Arquitetura do Firmware (RTOS)
-
-O software foi estruturado seguindo o modelo produtor-consumidor, maximizando o uso dos dois núcleos do ESP32.
-
-### Tabela de Tarefas (Tasks)
-
-| Task | Núcleo (Core) | Prioridade | Descrição |
-| :--- | :--- | :--- | :--- |
-| `TaskLeituraSensor` | **Core 1** (App) | **Alta (2)** | Realiza a leitura I2C a cada 50ms, converte os dados brutos para $m/s^2$ e envia para a fila. |
-| `TaskEnvioBluetooth`| **Core 0** (Pro) | **Baixa (1)** | Consome os dados da fila, formata em CSV e transmite via Bluetooth. |
-
-### Comunicação Inter-Processos (IPC)
-Utiliza-se uma **Fila (Queue)** do FreeRTOS para transferir a estrutura de dados (`SensorData`) entre o Core 1 e o Core 0. Isso desacopla a amostragem da transmissão, evitando condições de corrida (*Race Conditions*).
+Montagem do circuito em protoboard.
 
 ---
 
-##  Documentação Técnica
+## Detalhamento Técnico: Sensor e Comunicação
 
-### Fundamentação: RTOS vs. Sistemas de Propósito Geral
+Esta seção detalha o funcionamento dos periféricos e protocolos utilizados no projeto.
+
+### 1. O Sensor MPU6050
+O **MPU6050** é um sensor MEMS (*Micro Electro Mechanical Systems*) que integra um acelerômetro de 3 eixos e um giroscópio de 3 eixos no mesmo silício. Para este projeto, utilizamos apenas o acelerômetro.
+
+* **Princípio de Funcionamento:** O acelerômetro mede a aceleração própria (incluindo a gravidade). Internamente, ele possui massas microscópicas suspensas por molas de silício. Quando o sensor se move, a inércia desloca essas massas, alterando a capacitância entre placas fixas e móveis.
+* **Conversão A/D:** O sensor possui conversores Analógico-Digitais (ADC) de 16-bits internos para cada canal. Isso significa que a saída bruta (*Raw Data*) varia de -32768 a +32767.
+* **Escala de Sensibilidade:** O sensor foi configurado na escala padrão de **±2g**. Neste intervalo, a sensibilidade é de **16384 LSB/g**. Portanto, para obter o valor em força G, dividimos o valor bruto por 16384.
+
+### 2. Comunicação I2C (Inter-Integrated Circuit)
+A comunicação entre o ESP32 (Mestre) e o MPU6050 (Escravo) ocorre via protocolo I2C.
+
+* **Endereçamento:** O MPU6050 responde ao endereço hexadecimal `0x68` (padrão quando o pino AD0 está desconectado ou em GND).
+* **Registradores Críticos:**
+    * `PWR_MGMT_1 (0x6B)`: Usado para "acordar" o sensor, que inicia em modo *sleep*.
+    * `ACCEL_XOUT_H (0x3B)`: Endereço inicial dos dados de aceleração. A leitura é feita em *burst* (sequencial) de 6 bytes (High e Low byte para X, Y e Z).
+
+### 3. Comunicação Bluetooth (Serial Port Profile - SPP)
+Para a transmissão de dados, utiliza-se o Bluetooth do ESP32 emulando uma porta serial.
+* **Vantagem:** Permite que o ESP32 seja pareado com qualquer smartphone como se fosse um dispositivo serial legado, facilitando o uso de terminais genéricos sem a necessidade de criar um aplicativo Android do zero.
+
+---
+
+## Arquitetura de Software (RTOS)
+
+O firmware foi desenvolvido utilizando o **FreeRTOS**.
+
+### Multicore
+O ESP32 possui dois núcleos: **Protocol CPU (Core 0)** e **Application CPU (Core 1)**.
+
+1.  **Task de Aquisição (`TaskLeituraSensor`) -> Core 1**
+    * **Prioridade Alta (2):** Garante determinismo na amostragem (20Hz).
+    * Calcula: `Aceleração (m/s²) = (Raw / 16384.0) * 9.81`.
+    * Envia os dados para a Fila (*Queue*).
+
+2.  **Task de Comunicação (`TaskEnvioBluetooth`) -> Core 0**
+    * **Prioridade Baixa (1):** Roda em "background" sem bloquear a leitura.
+    * Recebe dados da Fila e formata em CSV: `ax,ay,az`.
+
+### Sincronização (IPC)
+Foi utilizada uma **Queue (Fila)** de tamanho 10 para transferir a estrutura de dados `SensorData` entre os núcleos. Isso evita *Race Conditions* (condições de corrida) onde a leitura e a escrita na mesma variável poderiam ocorrer simultaneamente, corrompendo o valor.
+
+---
+
+## Demonstração do funcionamento
+Foi gravado um vídeo demonstrando o funcionamento do projeto:
+
+
+
+## Fundamentação: RTOS vs. Sistemas de Propósito Geral
 O projeto utiliza o **FreeRTOS**, um sistema operacional focado em previsibilidade. Diferente de sistemas como Windows ou Linux, que priorizam o *throughput* (vazão), o RTOS garante que tarefas críticas atendam a prazos temporais (*deadlines*).
 
 ### Diferença entre Tasks e Threads/Processos
@@ -67,5 +101,5 @@ Conforme solicitado no roteiro da disciplina, destacam-se as diferenças fundame
     * Troca de contexto (*context switch*) extremamente rápida.
 
 2.  **Processos/Threads (Linux):**
-    * Em sistemas Linux (como na Raspberry Pi), o escalonador (CFS) busca "justiça" na distribuição de tempo de CPU entre processos.
-    * Isso pode introduzir *jitter* (variação de tempo), tornando-o menos adequado para leitura de sensores em "hard real-time" sem patches específicos (PREEMPT_RT).
+    * Em sistemas Linux (como na Raspberry Pi), o escalonador (CFS) busca distribuir o tempo de CPU entre processos.
+    * Isso pode introduzir *jitter* (variação de tempo), tornando-o menos adequado para leitura de sensores em "hard real-time" sem patches específicos.
