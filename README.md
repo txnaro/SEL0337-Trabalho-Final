@@ -1,12 +1,70 @@
-# SEL0337-Trabalho-Final
+# SEL0337 - Trabalho Final
 Entrega 6 de SEL0337 Por:  
 Thiago Ferreira Pires Nusp: 14754762  
-Francisco Ygor Grangeiro de Sousa Nusp: 14680979
+Francisco Ygor Grangeiro de Sousa Nusp: 14680979   
+
+Este repositório contém a documentação e os códigos desenvolvidos para o Projeto Final da disciplina. O trabalho está dividido em duas partes:
+1.  **Análise Teórica (Parte 1 do roteiro):** Estudo de caso de um produto comercial (Lâmpada Smart/Smart Switch) e validação científica.
+2.  **Desenvolvimento Prático (Parte 3 do roteiro):** Implementação de um sistema de monitoramento inercial em tempo real utilizando ESP32 e FreeRTOS.
 
 
-# Sistema de Monitoramento de Aceleração em Tempo Real com ESP32 e FreeRTOS
+# Parte 1 - Caracterização de Sistemas Embarcados
+## 1. Produto Escolhido: Lâmpada Smart / LED Smart Switch
 
-**Disciplina:** SEL0337 - Projetos em Sistemas Embarcados  
+**Descrição:** O produto analisado é uma Lâmpada Inteligente (Smart Bulb) / Interruptor Inteligente (Smart Switch) voltado para automação residencial (Domótica). O dispositivo permite o controle remoto da iluminação via Wi-Fi, ajuste de intensidade (dimmer), programação de horários e integração com assistentes virtuais.
+
+### Características Técnicas
+*(Preencha os dados abaixo com as especificações do modelo real que vocês escolheram, ex: Sonoff Slampher, Philips Hue, Positivo Smart, etc.)*
+
+| Subsistema | Detalhes Técnicos |
+| :--- | :--- |
+| **Unidade de Processamento** | MCU: [Ex: ESP8266 / ESP32 / Realtek RTL8710] <br> Arquitetura: [Ex: Xtensa 32-bit / ARM Cortex-M] <br> Clock: [Ex: 80 MHz] |
+| **Memória** | Flash: [Ex: 1MB / 4MB] (Externa/Interna) <br> RAM: [Ex: 50KB / 160KB] |
+| **Comunicação Sem Fio** | Protocolo: Wi-Fi 802.11 b/g/n (2.4 GHz) <br> [Opcional: Bluetooth Low Energy / Zigbee] |
+| **Entradas e Saídas (I/O)** | GPIOs para controle do Relé/PWM do LED <br> PWM: Modulação para controle de brilho/cor |
+| **Sensores e Atuadores** | **Atuadores:** Driver de LED (RGB/CCT) ou Relé eletromecânico. <br> **Sensores:** Sensor de corrente/tensão (se houver monitoramento de energia). |
+| **Alimentação** | Fonte AC/DC integrada (Flyback converter) 110-220V. |
+| **Sistema Operacional** | [Ex: FreeRTOS / Bare Metal / OS Proprietário base Linux] |
+| **Segurança** | Criptografia WPA2-PSK, TLS para comunicação com a nuvem. |
+
+---
+
+## 2. Validação Científica
+
+Abaixo apresentamos a análise de dois artigos científicos que fundamentam as tecnologias e aplicações do produto escolhido.
+
+### 📄 Artigo 1: Tecnologias Centrais
+**Título:** A Smart Switch to Connect and Disconnect Electrical Devices at Home by Using Internet  
+**Referência:** J. E. G. Salas, R. M. Caporal, E. B. Huerta, J. J. Rodriguez and J. J. R. Magdaleno, "A Smart Switch to Connect and Disconnect Electrical Devices at Home by Using Internet," in *IEEE Latin America Transactions*, vol. 14, no. 4, pp. 1575-1581, April 2016. doi: 10.1109/TLA.2016.7483485.
+
+> **Resumo:**
+> O artigo apresenta o desenvolvimento de um firmware para um Smart Switch capaz de conectar e desconectar remotamente dispositivos elétricos residenciais por meio da Internet. O sistema utiliza um módulo Wi-Fi com servidor embarcado, permitindo o controle via navegador web tanto em rede local quanto remotamente. São descritos os aspectos de firmware, protocolos de comunicação TCP/IP, comandos AT e a arquitetura de hardware baseada em relé e fontes reguladas. O trabalho também aborda testes experimentais que validam a funcionalidade do sistema, demonstrando sua viabilidade como solução de automação residencial de baixo custo e fácil implementação.
+
+**Análise Crítica:**
+* **Questão de Pesquisa:** Como projetar e implementar um dispositivo embarcado simples, de baixo custo e baseado em Wi-Fi, capaz de permitir o controle remoto confiável de cargas elétricas residenciais via Internet ou rede local?
+* **Importância:** O problema é altamente relevante para IoT e automação residencial, tratando da democratização do acesso a tecnologias de controle remoto. O trabalho antecipa conceitos de smart homes, como controle via navegador e integração com redes IP, essenciais para LED Smart Switches que exigem baixo consumo e simplicidade.
+* **Limitações e Questionamentos:** Os autores não exploram aprofundadamente a segurança (criptografia, autenticação), o que é crítico para dispositivos conectados. O sistema usa comandos simples sem discutir escalabilidade ou OTA. *Pergunta aos autores:* Como o sistema se comportaria com múltiplos dispositivos simultâneos e quais mecanismos de segurança poderiam ser incorporados para garantir proteção contra ataques em redes públicas?
+
+---
+
+### 📄 Artigo 2: Aplicações e Estudo de Caso
+**Título:** Development of LED smart switch with light-weight middleware for location-aware services in smart home  
+**Referência:** Z. Hwang, Y. Uhm, Y. Kim, G. Kim and S. Park, "Development of LED smart switch with light-weight middleware for location-aware services in smart home," in *IEEE Transactions on Consumer Electronics*, vol. 56, no. 3, pp. 1395-1402, Aug. 2010. doi: 10.1109/TCE.2010.5606275.
+
+> **Resumo:**
+> O artigo apresenta o desenvolvimento de um LED Smart Switch aplicado a ambientes de smart home, com foco em serviços sensíveis à localização. A proposta integra hardware embarcado, rede e um middleware leve para interoperabilidade. O sistema é validado em um estudo de caso residencial, onde a iluminação LED e o brilho se ajustam automaticamente conforme a presença do usuário. Os resultados demonstram redução no tempo de resposta, melhoria na experiência do usuário e viabilidade prática para eficiência energética.
+
+**Análise Crítica:**
+* **Questão de Pesquisa:** Como aplicar um LED Smart Switch em um ambiente doméstico real, integrando serviços sensíveis à localização por meio de um middleware leve, sem comprometer o desempenho?
+* **Importância:** Relevante para automação e computação ubíqua, abordando a transição para sistemas *context-aware*. Contribui para a compreensão de como sistemas embarcados oferecem eficiência energética e inteligência ambiental. O uso de middleware leve é fundamental para escalabilidade.
+* **Limitações e Questionamentos:** O sistema foi validado em pequena escala. Segurança, privacidade de dados de localização e interoperabilidade comercial não são aprofundados. *Pergunta aos autores:* Como o middleware se comportaria com dezenas de dispositivos ativos e como garantir a privacidade dos dados de localização dos usuários em produtos comerciais de larga escala?
+
+---
+
+
+
+# Parte 3 - Sistema de Monitoramento de Aceleração em Tempo Real com ESP32 e FreeRTOS
+  
 **Projeto:** Prática 6 - Introdução aos Sistemas Operacionais de Tempo Real (RTOS)
 
 ## Sobre o Projeto
