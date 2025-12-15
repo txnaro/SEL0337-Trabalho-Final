@@ -87,7 +87,7 @@ Foi utilizada uma **Queue (Fila)** de tamanho 10 para transferir a estrutura de 
 ## Demonstração do funcionamento
 Foi gravado um vídeo demonstrando o funcionamento do projeto:
 
-
+Na pasta "parte3" é possível encontrar todo o código utilizado, em formato .ino e .txt, além de prints, datasheet do sensor e programa de teste do FreeRTOS.
 
 ## Fundamentação: RTOS vs. Sistemas de Propósito Geral
 O projeto utiliza o **FreeRTOS**, um sistema operacional focado em previsibilidade. Diferente de sistemas como Windows ou Linux, que priorizam o *throughput* (vazão), o RTOS garante que tarefas críticas atendam a prazos temporais (*deadlines*).
