@@ -1,7 +1,7 @@
 # SEL0337 - Trabalho Final
 Entrega 6 de SEL0337 Por:  
-Thiago Ferreira Pires Nusp: 14754762  
-Francisco Ygor Grangeiro de Sousa Nusp: 14680979   
+Thiago Ferreira Pires Número USP: 14754762  
+Francisco Ygor Grangeiro de Sousa Número USP: 14680979   
 
 Este repositório contém a documentação e os códigos desenvolvidos para o Projeto Final da disciplina. O trabalho está dividido em duas partes:
 1.  **Análise Teórica (Parte 1 do roteiro):** Estudo de caso de um produto comercial (Lâmpada Smart/Smart Switch) e validação científica.
@@ -9,23 +9,34 @@ Este repositório contém a documentação e os códigos desenvolvidos para o Pr
 
 
 # Parte 1 - Caracterização de Sistemas Embarcados
-## 1. Produto Escolhido: Lâmpada Smart / LED Smart Switch
+## 1. Produto Escolhido: Lâmpada Smart Hive Smart Bulb
 
-**Descrição:** O produto analisado é uma Lâmpada Inteligente (Smart Bulb) / Interruptor Inteligente (Smart Switch) voltado para automação residencial (Domótica). O dispositivo permite o controle remoto da iluminação via Wi-Fi, ajuste de intensidade (dimmer), programação de horários e integração com assistentes virtuais.
+**Descrição:** O produto analisado é uma Lâmpada Inteligente (Smart Bulb) voltado para automação residencial. O dispositivo permite o controle remoto da iluminação via Wi-Fi, ajuste de intensidade, programação de horários e integração com assistentes virtuais a partir de um aplicativo móvel. Escolhemos o modelo da Hive pois foi possível encontrar um post *on-line* na *DigiKey* (fornecedor de componentes eletrônicos) sobre seus componentes internos.  
+O post pode ser acessado em: https://www.digikey.ee/en/maker/projects/teardown-hive-smart-bulb/11536204378b4195a03ae8815642a0db  
+
+Outra fonte de dados é o *datasheet* do MCU utilizado na lâmpada (JN5169), que pode ser acessado na pasta da parte 1 ou através do link:
+https://www.nxp.com/docs/en/data-sheet/JN5169-001-M0X-2.pdf
 
 ### Características Técnicas
-*(Preencha os dados abaixo com as especificações do modelo real que vocês escolheram, ex: Sonoff Slampher, Philips Hue, Positivo Smart, etc.)*
+
 
 | Subsistema | Detalhes Técnicos |
 | :--- | :--- |
-| **Unidade de Processamento** | MCU: [Ex: ESP8266 / ESP32 / Realtek RTL8710] <br> Arquitetura: [Ex: Xtensa 32-bit / ARM Cortex-M] <br> Clock: [Ex: 80 MHz] |
-| **Memória** | Flash: [Ex: 1MB / 4MB] (Externa/Interna) <br> RAM: [Ex: 50KB / 160KB] |
-| **Comunicação Sem Fio** | Protocolo: Wi-Fi 802.11 b/g/n (2.4 GHz) <br> [Opcional: Bluetooth Low Energy / Zigbee] |
-| **Entradas e Saídas (I/O)** | GPIOs para controle do Relé/PWM do LED <br> PWM: Modulação para controle de brilho/cor |
-| **Sensores e Atuadores** | **Atuadores:** Driver de LED (RGB/CCT) ou Relé eletromecânico. <br> **Sensores:** Sensor de corrente/tensão (se houver monitoramento de energia). |
-| **Alimentação** | Fonte AC/DC integrada (Flyback converter) 110-220V. |
-| **Sistema Operacional** | [Ex: FreeRTOS / Bare Metal / OS Proprietário base Linux] |
-| **Segurança** | Criptografia WPA2-PSK, TLS para comunicação com a nuvem. |
+| **Unidade de Processamento** | MCU: NXP JN5169, Arquitetura: 32 Bits RISC, Fabricante: NXP, Clock: 1MHz até 32MHz |
+| **Memória** | O JN5169 possui 512Kb de Flash, 32kB de RAM e 4kB de EEPROM |
+| **Sistema Operacional** | Não é possível afirmar, mas por ser um MCU será bare metal ou RTOS |
+| **Comunicação Sem Fio** | 2.4 GHz IEEE 802.15.4, ZigBee 3.0 e ZigBee PRO |
+| **Comunicação Com Fio** | O MCU possui I2C, UART, SPI e ADC|
+| **Entradas e Saídas (I/O)** | GPIOs para controle do LED <br> PWM: Modulação para controle de brilho/cor |
+| **Sensores e Atuadores** | **Atuadores:** Driver de LED. <br> **Sensores:** Sensor de corrente/tensão. <br> Não foi possível determinar a comunicação na aplicação.|
+| **Alimentação** | Fonte AC/DC integrada 220-240V. |
+| **Segurança** | AES-128 |
+| **Firmware e Atualizações** | Não foi possível determinar. |
+| **Armazenamento externo** | Não se aplica. |
+| **Interface com o Usuário** | Aplicativo móvel via rede sem fio. |
+
+Foi possível determinar grande parte das caracteristicas do sistema, com exceção da comunicação que faz o controle dos LEDs.  
+Quanto ao controle dos LEDs, por se tratar de um driver chaveado com controlador próprio, acreditamos que a cominicação é feita através de PWM.  
 
 ---
 
