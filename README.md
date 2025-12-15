@@ -37,11 +37,8 @@ A arquitetura do sistema é baseada em um *System on Chip* (SoC) otimizado para 
 | **Segurança** | Criptografia de Hardware **AES-128** (Nativo do JN5169). |
 | **Firmware e Atualizações** | Suporte a **OTA** (*Over-The-Air*) nativo do padrão ZigBee para atualizações remotas. |
 | **Armazenamento Externo** | Não aplicável. |
-| **Interface com o Usuário** | Indireta via Aplicativo Móvel. |
+| **Interface com o Usuário** | Indireta via Aplicativo Móvel. |  
 
-### Análise do Sistema
-
-A análise dos componentes permitiu mapear a arquitetura completa do dispositivo. O núcleo do sistema é o SoC **NXP JN5169**, que integra tanto o processamento da aplicação quanto o rádio transceptor 2.4 GHz.
 ---
 
 ## 2. Validação Científica
@@ -67,7 +64,7 @@ Abaixo apresentamos a análise de dois artigos científicos que fundamentam as t
 **Referência:** Z. Hwang, Y. Uhm, Y. Kim, G. Kim and S. Park, "Development of LED smart switch with light-weight middleware for location-aware services in smart home," in *IEEE Transactions on Consumer Electronics*, vol. 56, no. 3, pp. 1395-1402, Aug. 2010. doi: 10.1109/TCE.2010.5606275.
 
 > **Resumo:**
-> O artigo apresenta o desenvolvimento de um LED Smart Switch aplicado a ambientes de smart home, com foco em serviços sensíveis à localização. A proposta integra hardware embarcado, rede e um middleware leve para interoperabilidade. O sistema é validado em um estudo de caso residencial, onde a iluminação LED e o brilho se ajustam automaticamente conforme a presença do usuário. Os resultados demonstram redução no tempo de resposta, melhoria na experiência do usuário e viabilidade prática para eficiência energética.
+>O artigo apresenta o desenvolvimento e a implementação de um LED Smart Switch aplicado a ambientes de smart home, com foco em serviços sensíveis à localização do usuário. A proposta integra hardware embarcado, comunicação em rede e um middleware leve, responsável por abstrair dispositivos e facilitar a interoperabilidade. O sistema é validado por meio de um estudo de caso residencial, no qual o acionamento da iluminação LED e ajustes de brilho ocorrem automaticamente conforme a presença do usuário no ambiente e as condições de iluminância. Os resultados demonstram redução no tempo de resposta do sistema, melhoria na experiência do usuário e indicam a viabilidade prática da solução proposta, bem como seu potencial para aplicações com foco em eficiência energética. 
 
 **Análise Crítica:**
 * **Questão de Pesquisa:** Como aplicar um LED Smart Switch em um ambiente doméstico real, integrando serviços sensíveis à localização por meio de um middleware leve, sem comprometer o desempenho?
