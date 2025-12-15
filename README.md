@@ -20,9 +20,12 @@ A escolha deste modelo baseou-se na disponibilidade de documentação técnica d
 * **Teardown (Análise de Hardware):** [Post na DigiKey - Teardown Hive Smart Bulb](https://www.digikey.ee/en/maker/projects/teardown-hive-smart-bulb/11536204378b4195a03ae8815642a0db)
 * **Datasheet do Microcontrolador:** [NXP JN5169 Data Sheet](https://www.nxp.com/docs/en/data-sheet/JN5169-001-M0X-2.pdf)
 
+![lampada utilizada](https://github.com/user-attachments/assets/87c6e31b-313a-4f46-b02c-4bede908cfe7)  
+Lâmpada escolhida para a análise. Fonte: All About Circuits.
+
 ### Características Técnicas
 
-A arquitetura do sistema é baseada em um *System on Chip* (SoC) otimizado para aplicações de rede sem fio de baixa potência.
+A arquitetura do sistema é baseada em um SoC otimizado para aplicações de rede sem fio de baixa potência.
 
 | Subsistema | Detalhes Técnicos |
 | :--- | :--- |
@@ -35,9 +38,14 @@ A arquitetura do sistema é baseada em um *System on Chip* (SoC) otimizado para 
 | **Sensores e Atuadores** | **Atuador:** Matriz de LEDs acoplada a um driver de potência. |
 | **Alimentação** | Fonte AC/DC integrada Buck ou Flyback operando em 220-240V. |
 | **Segurança** | Criptografia de Hardware **AES-128** (Nativo do JN5169). |
-| **Firmware e Atualizações** | Suporte a **OTA** (*Over-The-Air*) nativo do padrão ZigBee para atualizações remotas. |
+| **Firmware e Atualizações** | Suporte nativo do padrão ZigBee para atualizações remotas. |
 | **Armazenamento Externo** | Não aplicável. |
 | **Interface com o Usuário** | Indireta via Aplicativo Móvel. |  
+
+
+![JN5169 utilizado na lâmpada](https://github.com/user-attachments/assets/99ef87f5-4ad0-4a2d-9ce1-5e575d25e57d)
+
+JN5169 utilizado na lâmpada. Fonte: All About Circuits.
 
 ---
 
@@ -81,10 +89,11 @@ Abaixo apresentamos a análise de dois artigos científicos que fundamentam as t
 
 ## Sobre o Projeto
 
-Este projeto consiste em um sistema embarcado de tempo real desenvolvido para a aquisição e transmissão de dados inerciais. Utilizando um microcontrolador **ESP32** e o sensor **MPU6050**, o sistema monitora a aceleração nos três eixos (X, Y, Z) e transmite os dados processados via Bluetooth para um dispositivo móvel.
+Este projeto consiste em um sistema embarcado de tempo real desenvolvido para a aquisição e transmissão de dados inerciais. Utilizando um microcontrolador ESP32 e o sensor MPU6050, o sistema monitora a aceleração nos três eixos (X, Y, Z) e transmite os dados processados via Bluetooth para um dispositivo móvel.
 
-A principal motivação deste experimento foi explorar a arquitetura **Dual-Core** do ESP32 através do **FreeRTOS**, segregando tarefas críticas de aquisição (Hard Real-Time) das tarefas de comunicação (Soft Real-Time) para garantir determinismo e estabilidade.
+A principal motivação deste experimento foi explorar a arquitetura Dual-Core do ESP32 através do FreeRTOS, segregando tarefas críticas de aquisição (Hard Real-Time) das tarefas de comunicação (Soft Real-Time) para garantir determinismo e estabilidade.
 
+A implementação deste sensor via barramento I2C adiciona uma camada necessária de complexidade ao projeto, exigindo o gerenciamento preciso de endereçamento e timing de comunicação. Além disso, a necessidade de converter os dados brutos dos registradores internos em grandezas físicas utilizáveis cria uma carga de processamento representativa, validando a eficiência do escalonamento de tarefas proposto.
 ## Hardware Utilizado
 
 * **Microcontrolador:** ESP32 DevKit V1
@@ -150,12 +159,13 @@ O ESP32 possui dois núcleos: **Protocol CPU (Core 0)** e **Application CPU (Cor
     * Recebe dados da Fila e formata em CSV: `ax,ay,az`.
 
 ### Sincronização (IPC)
-Foi utilizada uma **Queue (Fila)** de tamanho 10 para transferir a estrutura de dados `SensorData` entre os núcleos. Isso evita *Race Conditions* (condições de corrida) onde a leitura e a escrita na mesma variável poderiam ocorrer simultaneamente, corrompendo o valor.
+Foi utilizada uma Queue de tamanho 10 para transferir a estrutura de dados `SensorData` entre os núcleos. Isso evita Race Conditions onde a leitura e a escrita na mesma variável poderiam ocorrer simultaneamente, corrompendo o valor.
 
 ---
 
 ## Demonstração do funcionamento
-Foi gravado um vídeo demonstrando o funcionamento do projeto:
+Foi gravado um vídeo demonstrando o funcionamento do projeto:  
+https://youtu.be/_0PJqAqvBnI
 
 Na pasta "parte3" é possível encontrar todo o código utilizado, em formato .ino e .txt, além de prints, datasheet do sensor e programa de teste do FreeRTOS.
 
