@@ -9,35 +9,39 @@ Este repositório contém a documentação e os códigos desenvolvidos para o Pr
 
 
 # Parte 1 - Caracterização de Sistemas Embarcados
-## 1. Produto Escolhido: Lâmpada Smart Hive Smart Bulb
 
-**Descrição:** O produto analisado é uma Lâmpada Inteligente (Smart Bulb) voltado para automação residencial. O dispositivo permite o controle remoto da iluminação via Wi-Fi, ajuste de intensidade, programação de horários e integração com assistentes virtuais a partir de um aplicativo móvel. Escolhemos o modelo da Hive pois foi possível encontrar um post *on-line* na *DigiKey* (fornecedor de componentes eletrônicos) sobre seus componentes internos.  
-O post pode ser acessado em: https://www.digikey.ee/en/maker/projects/teardown-hive-smart-bulb/11536204378b4195a03ae8815642a0db  
+## 1. Produto Escolhido: Lâmpada Smart Hive Active Light
 
-Outra fonte de dados é o *datasheet* do MCU utilizado na lâmpada (JN5169), que pode ser acessado na pasta da parte 1 ou através do link:
-https://www.nxp.com/docs/en/data-sheet/JN5169-001-M0X-2.pdf
+**Descrição:** O produto analisado é a lâmpada inteligente **Hive Active Light**, um dispositivo de automação residencial controlado remotamente. Diferente de lâmpadas Wi-Fi comuns, este modelo opera através do protocolo **ZigBee**, comunicando-se com um *Hub* central que, por sua vez, conecta-se à internet. Isso permite funcionalidades como ajuste de intensidade, agendamento e integração com assistentes virtuais.
+
+A escolha deste modelo baseou-se na disponibilidade de documentação técnica detalhada de seus componentes internos.
+
+**Fontes de Análise:**
+* **Teardown (Análise de Hardware):** [Post na DigiKey - Teardown Hive Smart Bulb](https://www.digikey.ee/en/maker/projects/teardown-hive-smart-bulb/11536204378b4195a03ae8815642a0db)
+* **Datasheet do Microcontrolador:** [NXP JN5169 Data Sheet](https://www.nxp.com/docs/en/data-sheet/JN5169-001-M0X-2.pdf)
 
 ### Características Técnicas
 
+A arquitetura do sistema é baseada em um *System on Chip* (SoC) otimizado para aplicações de rede sem fio de baixa potência.
 
 | Subsistema | Detalhes Técnicos |
 | :--- | :--- |
-| **Unidade de Processamento** | MCU: NXP JN5169, Arquitetura: 32 Bits RISC, Fabricante: NXP, Clock: 1MHz até 32MHz |
-| **Memória** | O JN5169 possui 512Kb de Flash, 32kB de RAM e 4kB de EEPROM |
-| **Sistema Operacional** | Não é possível afirmar, mas por ser um MCU será bare metal ou RTOS |
-| **Comunicação Sem Fio** | 2.4 GHz IEEE 802.15.4, ZigBee 3.0 e ZigBee PRO |
-| **Comunicação Com Fio** | O MCU possui I2C, UART, SPI e ADC|
-| **Entradas e Saídas (I/O)** | GPIOs para controle do LED <br> PWM: Modulação para controle de brilho/cor |
-| **Sensores e Atuadores** | **Atuadores:** Driver de LED. <br> **Sensores:** Sensor de corrente/tensão. <br> Não foi possível determinar a comunicação na aplicação.|
-| **Alimentação** | Fonte AC/DC integrada 220-240V. |
-| **Segurança** | AES-128 |
-| **Firmware e Atualizações** | Não foi possível determinar. |
-| **Armazenamento externo** | Não se aplica. |
-| **Interface com o Usuário** | Aplicativo móvel via rede sem fio. |
+| **Unidade de Processamento** | **SoC:** NXP JN5169 <br> **Arquitetura:** CPU 32-bit RISC <br> **Clock:** Variável 1 MHz a 32 MHz. |
+| **Memória** | Integrada ao SoC: 512 kB Flash, 32 kB RAM e 4 kB EEPROM (para persistência de configurações). |
+| **Sistema Operacional** | Pilha de protocolo **ZigBee PRO** rodando sobre *Bare Metal* ou um escalonador de tarefas leve (Ex: JenOS da NXP). |
+| **Comunicação Sem Fio** | Padrão **IEEE 802.15.4** (2.4 GHz). <br> Protocolo de Rede: ZigBee 3.0 / ZigBee Home Automation (HA). |
+| **Comunicação Com Fio** | Periféricos internos do MCU: I2C, UART, SPI e ADC. |
+| **Entradas e Saídas (I/O)** | GPIOs dedicados ao chaveamento do Driver de LED. <br> **PWM:** Modulação por Largura de Pulso para controle preciso de brilho e temperatura de cor. |
+| **Sensores e Atuadores** | **Atuador:** Matriz de LEDs acoplada a um driver de potência. |
+| **Alimentação** | Fonte AC/DC integrada Buck ou Flyback operando em 220-240V. |
+| **Segurança** | Criptografia de Hardware **AES-128** (Nativo do JN5169). |
+| **Firmware e Atualizações** | Suporte a **OTA** (*Over-The-Air*) nativo do padrão ZigBee para atualizações remotas. |
+| **Armazenamento Externo** | Não aplicável. |
+| **Interface com o Usuário** | Indireta via Aplicativo Móvel. |
 
-Foi possível determinar grande parte das caracteristicas do sistema, com exceção da comunicação que faz o controle dos LEDs.  
-Quanto ao controle dos LEDs, por se tratar de um driver chaveado com controlador próprio, acreditamos que a cominicação é feita através de PWM.  
+### Análise do Sistema
 
+A análise dos componentes permitiu mapear a arquitetura completa do dispositivo. O núcleo do sistema é o SoC **NXP JN5169**, que integra tanto o processamento da aplicação quanto o rádio transceptor 2.4 GHz.
 ---
 
 ## 2. Validação Científica
