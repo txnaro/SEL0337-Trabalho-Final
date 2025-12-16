@@ -5,7 +5,7 @@ Francisco Ygor Grangeiro de Sousa Número USP: 14680979
 
 Este repositório contém a documentação e os códigos desenvolvidos para o Projeto Final da disciplina. O trabalho está dividido em duas partes:
 1.  **Análise Teórica (Parte 1 do roteiro):** Estudo de caso de um produto comercial (Lâmpada Smart) e validação científica.
-2.  **Desenvolvimento Prático (Parte 3 do roteiro):** Implementação de um sistema de monitoramento inercial em tempo real utilizando ESP32 e FreeRTOS.
+2.  **Desenvolvimento Prático (Parte 3 do roteiro):** Implementação de um sistema de monitoramento de aceleração em tempo real utilizando ESP32 e FreeRTOS.
 
 
 # Parte 1 - Caracterização de Sistemas Embarcados
