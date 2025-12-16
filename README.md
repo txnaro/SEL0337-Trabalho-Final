@@ -53,7 +53,7 @@ JN5169 utilizado na lâmpada. Fonte: All About Circuits.
 
 Abaixo apresentamos a análise de dois artigos científicos que fundamentam as tecnologias e aplicações do produto escolhido.
 
-### 📄 Artigo 1: Tecnologias Centrais
+### Artigo 1: Tecnologias Centrais
 **Título:** A Smart Switch to Connect and Disconnect Electrical Devices at Home by Using Internet  
 **Referência:** J. E. G. Salas, R. M. Caporal, E. B. Huerta, J. J. Rodriguez and J. J. R. Magdaleno, "A Smart Switch to Connect and Disconnect Electrical Devices at Home by Using Internet," in *IEEE Latin America Transactions*, vol. 14, no. 4, pp. 1575-1581, April 2016. doi: 10.1109/TLA.2016.7483485.
 
@@ -67,7 +67,7 @@ Abaixo apresentamos a análise de dois artigos científicos que fundamentam as t
 
 ---
 
-### 📄 Artigo 2: Aplicações e Estudo de Caso
+### Artigo 2: Aplicações e Estudo de Caso
 **Título:** Development of LED smart switch with light-weight middleware for location-aware services in smart home  
 **Referência:** Z. Hwang, Y. Uhm, Y. Kim, G. Kim and S. Park, "Development of LED smart switch with light-weight middleware for location-aware services in smart home," in *IEEE Transactions on Consumer Electronics*, vol. 56, no. 3, pp. 1395-1402, Aug. 2010. doi: 10.1109/TCE.2010.5606275.
 
