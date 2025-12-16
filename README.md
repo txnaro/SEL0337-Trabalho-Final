@@ -91,7 +91,7 @@ Abaixo apresentamos a análise de dois artigos científicos que fundamentam as t
 
 Este projeto consiste em um sistema embarcado de tempo real desenvolvido para a aquisição e transmissão de dados inerciais. Utilizando um microcontrolador ESP32 e o sensor MPU6050, o sistema monitora a aceleração nos três eixos (X, Y, Z) e transmite os dados processados via Bluetooth para um dispositivo móvel.
 
-A principal motivação deste experimento foi explorar a arquitetura Dual-Core do ESP32 através do FreeRTOS, segregando tarefas críticas de aquisição (Hard Real-Time) das tarefas de comunicação (Soft Real-Time) para garantir determinismo e estabilidade.
+A principal motivação deste experimento foi explorar a arquitetura Dual-Core do ESP32 através do FreeRTOS, separando tarefas críticas de aquisição (Hard Real-Time) das tarefas de comunicação (Soft Real-Time) para garantir determinismo e estabilidade.
 
 A implementação deste sensor via barramento I2C adiciona uma camada necessária de complexidade ao projeto, exigindo o gerenciamento preciso de endereçamento e timing de comunicação. Além disso, a necessidade de converter os dados brutos dos registradores internos em grandezas físicas utilizáveis cria uma carga de processamento representativa, validando a eficiência do escalonamento de tarefas proposto.
 ## Hardware Utilizado
